@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="flexbox">
+
+    <h1>LE Utility</h1>
+    <form name='setlevals' id='setlevals' method='get' action='/setleval/2'>
+    <button class="btn btn-primary btn-large" disabled id="adjprod" action="/setleval">Adjust Production</button>
+    <div id="lehold" style="hidden:true" value=""></div>
+    </form>
+
+        <hr />
+    <form name='getle' id='getle'>
+        Select LE:
+        <input type="text" name="les" id="wells_select" list="lesel" onchange="subselect({{lesel}})">
+                <datalist id="lesel" name="lesel">
+                        {% for e in lesel | groupby('LEName') %}
+
+                        <option>{{e.grouper}}</option>
+
+                        {% endfor %}
+    </datalist>
+    </br>
+        <hr />
+        Area:
+        <select id="area_selection" name="area_selection" onchange="areasub({{lesel}})"></select>
+        Wedge:
+        <select id="wedge_selection" name="wedge_selection" onchange="wedgesub({{lesel}})"></select>
+        Well:
+        <select id="s_well_selection" name="s_well_selection"></select>
+        Phase:
+        <select id="phase_selection" name="phase_selection">
+        <option>Gas</option>
+        <option>Oil</option>
+        <option>Water</option>
+        <option>BOE</option>
+        </select>
+        Select Forecast:
+        <select id="forecast_selection" name="forecast_selection"></select>
+        <hr />
+
+    </div>
+
+
+
+    </form>
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#plot_container">Plot</a></li>
+  <li><a data-toggle="tab" href="#summary_container">Summary</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="plot_container" class="tab-pane fade in active">
+  </br>
+            <div>
+        <button class="btn btn-primary btn-large" id="plot_sel" onclick="get_plot();" name="plot_sel" disabled data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Getting Data">Plot Above Selections</button>
+            <div class="progress" hidden>
+              <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span id="current-progress"></span>
+              </div>
+            </div>
+        </div>
+        </br>
+    <div id="chartContainer" style="height: 300px; width: 99%;"></div>
+  </div>
+  </br>
+  <div id="summary_container" class="tab-pane fade">
+        <button class="btn btn-primary btn-large" id="summary_sel" name="summary_sel" disabled data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Getting Data">Load Summary</button>
+        <button class="btn btn-primary btn-large" id="calc_sum" name="calc_sum" data-toggle="modal" data-target="#ModBox" disabled data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Calculating...">Calculate Summary</button>
+          <div id="ltext" name="ltext" style="display:none;" >Saving...</div>
+        </br>
+        <div data-tabdef='{{tabdef}}' id="summaryspreadsheet"></div>
+
+  <div class="modal fade" id="ModBox" tabindex="-1" role="dialog" aria-labelledby="ModBoxModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModBoxModalLabel">Create New Summary</h5>
+        <div >Note: Creation of a summary can take up to 5 minutes. Please check back after submission.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="summary-name" class="col-form-label">Summary Name</label>
+            <input type="text" class="form-control" id="summary-name">
+          </div>
+          <div class="form-group">
+            <label for="forecast-name" class="col-form-label">Forecast</label>
+            <textarea class="form-control" readonly="readonly" id="forecast-name"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="le-name" class="col-form-label">LE</label>
+            <textarea class="form-control" readonly="readonly" id="le-name"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick='function(){document.getElementById("calc_sum").disabled = false;}' data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="create_sum" name="create_sum">Create Summary</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/main_screen.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{%block content%}
+</script>
+
+    <h1>Production Adjustment</h1>
+
+
+    <div id="wrap" class="container">
+
+
+<form id="getprod" action="/getproduction" method="post">
+<label for="leselect">Selected LE</label>
+<input type="text" style="hidden:true" readonly="readonly" id='leselect' name='leselect' value ='{{wellsel[0].LEName}}'></br>
+<label for="wellsel">Well Search</label>
+<input type="text" name="wells" id="wells_selection" list="wellsel">
+        <datalist id="wellsel" name="wellsel" >
+                {% for e in wellsel | groupby('WellName') %}
+
+                <option>{{e.grouper}}</option>
+
+                {% endfor %}
+    </datalist></br>
+
+<input type="radio" id="Gas" name="phase" value="Gas" checked>
+<label for="Gas">Gas</label><br>
+<input type="radio" id="Oil" name="phase" value="Oil">
+<label for="Oil">Oil</label><br>
+<input type="radio" id="Water" name="phase" value="Water">
+<label for="Water">Water</label><br>
+<input type="radio" id="BOE" name="phase" value="BOE">
+<label for="BOE">BOE</label>
+</br>
+<label for="start_date">Start Date</label>
+<input type="date" id="start_date" name="start_date">
+<label for="end_date">End Date</label>
+<input type="date" id="end_date" name="end_date">
+<input class="btn btn-primary btn-large" type="submit">
+</form>
+</div>
+<div id="phtext">{{phtext}}</div>
+<div data-tabdef='{{tabdef}}' id="spreadsheet"></div>
+<div id="req" data-req='{{req}}'></div>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/productionadjustment.js') }}"></script>
+{% endblock %}

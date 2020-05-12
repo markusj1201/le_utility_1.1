@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<script src="/static/scripts/jquery-1.10.2.js"></script>
+<script src="/static/scripts/multiselect.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $('#well_list').multiselect({
+        search: {
+            left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+            right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+        },
+        fireSearch: function(value) {
+            return value.length > 2;
+        }
+    });
+});
+</script>
+
+
+    <h1>Area Aggregation</h1>
+
+
+    <div id="wrap" class="container">
+            <label for="sl1">Area Search</label></br>
+        <select id="sl1" name="sl1" onchange="wellselect({{sl1}})">
+    {% for d in sl1 | groupby('AggregateName') %}
+        <option>{{d.grouper}}</option>
+        {% endfor %}
+    </select>
+
+    </br>
+<div class="row">
+    <div class="col-xs-5">
+        <select name="from[]" id="well_list" class="form-control" size="8" multiple="multiple">
+                {% for e in sl1 if e.AggregateName == "Angie" %}
+
+                <option>{{e.WellName}}</option>
+
+                {% endfor %}
+        </select>
+
+        <form id="create_area" method="post" action="/createarea">
+
+        <label for="new_area_route"> Input New Area Name</label></br>
+        <input type="text" id="new_area_route" name="new_area_route"></input>
+        </br>
+        <select name="selroute" id="selroute">
+                {% for e in selroute%}
+
+                <option>{{e}}</option>
+
+                {% endfor %}
+    </select>
+    </br>
+    <input type="submit" class = 'btn btn-primary btn-large' value="Create New Area From Route" id="pop_routes"></button>
+    </form>
+    </div>
+    <div class="col-xs-2">
+        <button type="button" id="well_list_rightAll" class="btn btn-primary btn-large"><i class="glyphicon glyphicon-forward"></i></button></br></br>
+        <button type="button" id="well_list_rightSelected" class="btn btn-primary btn-large"><i class="glyphicon glyphicon-chevron-right"></i></button></br></br>
+        <button type="button" id="well_list_leftSelected" class="btn btn-primary btn-large"><i class="glyphicon glyphicon-chevron-left"></i></button></br></br>
+        <button type="button" id="well_list_leftAll" class="btn btn-primary btn-large"><i class="glyphicon glyphicon-backward"></i></button>
+    </div>
+
+    <div class="col-xs-5">
+        <form id="update_area" method="post" action="/editarea">
+        <select name="to[]" id="well_list_to" class="form-control" size="8" multiple="multiple"></select>
+
+        <label for="update_area"> Update Existing Area</label></br>
+            <select id="sl2" name="sl2">
+            {% for d in sl2 | groupby('AggregateName') %}
+            <option>{{d.grouper}}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" class = 'btn btn-primary btn-large' value="Update" id="make_area" name="button_area"></button>
+        <input type="submit" class = 'btn btn-primary btn-large' value="Delete" id="delete_area" name="button_area"></button>
+        </br>
+        </hr>
+        <label for="new_area"> Input New Area Name</label></br>
+        <input type="text"  id="new_area" name="new_area"></input>
+        <input type="submit" class = 'btn btn-primary btn-large' id="create_area" name="button_area" value="Create"></br>
+
+        </form>
+
+
+    </div>
+
+</div>
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/areaaggregation.js') }}"></script>
+{% endblock %}

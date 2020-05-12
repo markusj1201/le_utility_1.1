@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{%block content%}
+
+    <h1>Netting Adjustment</h1>
+
+
+    <div id="wrap" class="container">
+
+
+<form id="getnet" action="/getnetting" method="post">
+<label for="wellsel">Well Search</label>
+<input type="text" name="wells" id="wells_selection" list="wellsel">
+        <datalist id="wellsel" name="wellsel" >
+                {% for e in wellsel | groupby('WellName') %}
+
+                <option>{{e.grouper}}</option>
+
+                {% endfor %}
+    </datalist></br>
+
+<input type="radio" id="Gas" name="phase" value="Gas" checked>
+<label for="Gas">Gas</label><br>
+<input type="radio" id="Oil" name="phase" value="Oil">
+<label for="Oil">Oil</label><br>
+<input class="btn btn-primary btn-large" type="submit">
+</form>
+</div>
+</br>
+<div data-tabdef='{{tabdef}}' id="netspreadsheet"></div>
+
+<div id="netreq" data-netreq='{{netreq}}'></div>
+<div id="phreq" data-phreq='{{phreq}}'></div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/nettingadjustment.js') }}"></script>
+{% endblock %}

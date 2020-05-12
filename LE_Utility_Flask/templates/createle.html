@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<h2>Create LE</h2>
+</br>
+<div class="flexbox">
+<form id="create_le" name="create_le" action="/calculatelevalue" method="post">
+<label for="le_text">LE Name :</label>
+        <input type="text" name="le_text" id="le_text" onchange="selector();">
+        </br>
+<label for="wells_select">Select LE:</label>
+        <input type="text" name="les" id="wells_select" list="lesel" onchange="selector();">
+                <datalist id="lesel" name="lesel">
+                        {% for e in lesel | groupby('LEName') %}
+
+                        <option>{{e.grouper}}</option>
+
+                        {% endfor %}
+    </datalist>
+<label for="forecast_select">Select Forecast:</label>
+        <input type="text" name="fore" id="forecast_select" list="foresel" onchange="selector()">
+                <datalist id="foresel" name="foresel">
+                        {% for e in foresel | groupby('ForecastName')%}
+
+                        <option>{{e.grouper}}</option>
+
+                        {% endfor %}
+    </datalist>
+</br>
+<label for="sdate_select">Start Date:</label>
+<input type="date" id="sdate_select" name="sdate_select">
+</br>
+<label for="edate_select">End Date:</label>
+<input type="date" id="edate_select" name="edate_select">
+</br>
+<button class="btn btn-primary btn-large"  id="createle_button" name="createle_button" disabled data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Creating LE">Create LE</button>
+
+</form>
+</div>
+</br>
+</hr>
+
+<div class="flexbox" id="manualentry" name="manualentry">
+<label for="intmethod">Interpolation Method: </label>
+<select id="intmethod" name="intmethod">
+<option value="None">None</option>
+<option value="MonthlyVolumes">MonthlyVolumes</option>
+<option value="MonthlyRates">MonthlyRates</option>
+</select>
+</br>
+<button class="btn btn-primary btn-large"  id="createle_template_button" name="createle_template_button" onclick="createtemplate();" disabled data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Creating Table">Create Workspace</button>
+</br>
+<input type="radio" id="gasradio" name="gasradio" checked="checked"  value="Gas">
+<label for="gasradio">Gas</label><br>
+<input type="radio" id="oilradio" name="oilradio" value="Oil">
+<label for="oilradio">Oil</label><br>
+<button class="btn btn-primary btn-large"  id="createle_wbutton" name="createle_wbutton" onclick="submittemplate();" disabled data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Creating LE">Create LE From Workspace</button>
+</br>
+<div id="lespreadsheet"></div>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/createle.js') }}"></script>
+{% endblock %}

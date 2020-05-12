@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="flexbox">
+    <h1>LE Utility Adjustment</h1>
+    <form>
+    <p><a href="http://localhost:5000/AutoCreateFracHitMultiplier" class="btn btn-primary btn-large">Auto Calculate Frac Hit &raquo;</a></p>
+    </form>
+</div>
+
+
+
+  <div id="chartContainer" style="height: 200px; width: 99%;"></div>
+  
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/utilityadjustment.js') }}"></script>
+{% endblock %}
