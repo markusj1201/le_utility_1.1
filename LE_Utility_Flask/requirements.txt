@@ -12,4 +12,4 @@ protobuf==3.11.3
 pylibmc==1.6.1
 python_dateutil==2.8.1
 View==0.1
-waitress==1.4.3
+waitress==2.1.1
