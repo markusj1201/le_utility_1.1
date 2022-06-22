@@ -3,7 +3,7 @@ requests==2.22.0
 Flask_Cors==3.0.8
 pandas==0.25.3
 Flask==1.1.1
-numpy==1.18.1
+numpy==1.22.0
 clr==1.0.3
 flask_caching==1.8.0
 libmc==1.4.1
